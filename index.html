@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Tool for Awesome Courses</title>
+
+	<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+	<div id="js-template">
+		<div id="js-template--block-text" class="block text-block">
+			<div class="info"></div>
+			<div class="block-inner"></div>	
+		</div>
+		<div id="js-template--edit-text" class="edit edit-text">
+			<h2></h2>
+			<button class="delete-btn">X</button>
+			<textarea name="changeTxt" class="changeTxt">Écrire du texte ici</textarea>
+			<div class="edit-functions">
+				<div class="text-position gui-group">
+					<label for="topPos">top</label>
+					<input type="number" class="topPos col-2" name="topPos" value="0">
+					<label for="leftPos">left</label>
+					<input type="number" class="leftPos col-2" name="leftPos" value="0">
+				</div>
+				<div class="choose-font gui-group">
+					<label for="fonts">font-family:</label> 
+					<select name="fonts" class="fonts"> 
+						<option value="monaco" default>Monaco</option> 
+						<option value="anka">Anka</option> 
+						<option value="avara">Avara</option> 
+						<option value="millimetre">Millimetre</option> 
+						<option value="worksans">Work Sans</option>
+					</select>
+				</div>
+				<div class="text-color gui-group">
+					<label for="textColor">color:</label>
+					<input class="textColor" name="textColor" value="#000">
+				</div>
+				<div class="text-size gui-group">
+					<label for="textSize">font-size</label>
+					<input type="number" class="textSize" name="textSize" value="40">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="preview-panel">
+		<button id ="preview" type="text">Aperçu</button>
+	</div>
+
+	<div id="ui-panel">
+		<div class="topPanel">
+			<h1>Tool for Awesome Icons</h1>
+		</div>
+		<div class="scrollBox">
+			<section id="add-content">
+				<button type="text" id="add-text">+ Texte</button>
+			</section>
+			<section id="edit-content"></section>
+			<section>
+				<h2>Background image</h2>
+				<div class="add-image gui-group">
+					<label>Image File:</label><br/>
+					<input type="file" id="fileInput" accept="image/jpeg, image/png, image/jpg"/>
+					<!-- save btn -->
+					<button class="btn crop hide">Crop</button>
+				</div>
+				<div class="choose-color">
+					<div class="choose-color-inner gui-group">
+						<label for="imageColor">Image color</label>
+			      <input id="imageColor" name="imageColor" value="#000">
+		    	</div>
+		    	<div class="choose-color-inner gui-group">
+		    		<label for="imageColorAfter">Image color n°2</label>
+			    	<input id="imageColorAfter" name="imageColorAfter" value="#FFF">
+			    </div>
+				</div>
+			</section>
+			<section>
+				<h2>Text setting</h2>
+				<div class="add-text gui-group">
+					<label for="iconText">Text</label>
+					<textarea name="iconText" id="iconText"></textarea>
+				</div>
+				<div class="choose-font gui-group">
+					<label for="fonts">Choose a font:</label>
+					<select name="fonts" id="fonts">
+						<option value="monaco" default>Monaco</option>
+					  <option value="anka">Anka</option>
+					  <option value="avara">Avara</option>
+					  <option value="millimetre">Millimetre</option>
+					  <option value="worksans">Work Sans</option>
+					</select> 
+				</div>
+				<div class="text-color gui-group">
+					<label for="textColor">Text color</label>
+					<input id="textColor" name="textColor"
+		           value="#000">
+				</div>
+				<div class="text-size gui-group">
+					<label for="textSize">Text size</label>
+					  <input type="range" id="textSize" name="textSize"
+	         min="12" max="70" default="30">
+				</div>
+			</section>
+			<section>
+				<h2>Let's get fancy</h2>
+				<div class="shape gui-group">
+					<label for="addShape">Add background shape</label>
+					<select name="addShape" id="addShape">
+						<option value="none" default>None</option>
+					  <option value="square">Square</option>
+					  <option value="rounded">Rounded</option>
+					  <option value="circle">Circle</option>
+					</select> 
+				</div>
+				<div class="shape-color gui-group">
+					<label for="shapeColor">Shape color</label>
+					<input id="shapeColor" name="shapeColor"
+		           value="#FFF">
+				</div>
+				<div class="text-opacity gui-group">
+					<label for="textOpacity">Opacity</label>
+					  <input type="range" id="textOpacity" name="textOpacity"
+	         min="0" max="1" default="1" step="0.1">
+				</div>
+			</section>
+		</div>
+		<section class="download-clear">
+			<div class="download">
+				<button id="downloadLnk">Download as image</button>
+			</div>
+			<div class="Clear">
+				<button id="clearBtn">Clear</button>
+			</div>
+		</section>
+	</div>
+	
+	<div id="canvas-wrapper">
+		<div id="poster">
+		</div>
+	</div>
+	
+		
+<script src="jquery-3.4.1.min.js" type="text/javascript"></script>
+<script src="jquery.simple-color.min.js" type="text/javascript"></script>
+<script src="random-sentence.js" type="text/javascript"></script>
+<script src="script.js" type="text/javascript"></script>
+
+</body>
+</html>

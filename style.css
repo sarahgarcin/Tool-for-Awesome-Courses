@@ -1,0 +1,278 @@
+/* load fonts */
+@font-face {
+    font-family: 'anka';
+    src: url('fonts/ankacoder-b-webfont.woff2') format('woff2'),
+        url('fonts/ankacoder-b-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'avara';
+    src: url('fonts/avara-webfont.woff2') format('woff2'),
+        url('fonts/avara-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'millimetre';
+    src: url('fonts/Millimetre-Regular_web.woff2') format('woff2'),
+        url('fonts/Millimetre-Regular_web.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'worksans';
+    src: url('fonts/WorkSans-Bold.woff2') format('woff2'),
+        url('fonts/WorkSans-Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* Vars */
+:root{
+  --color-before : transparent;
+  --color-after : transparent;
+}
+
+*{
+  box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+} 
+
+body{
+	margin: 0; 
+  font-size: 16px; 
+  font-family: sans-serif;
+  background: #BFBFBF;
+  line-height: 1.2;
+  color: #000;
+  font-family: "anka", sans-serif;
+}
+
+h1{
+  margin-top: 0;;
+  font-weight:normal;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+h2{
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight:normal;
+  text-transform: uppercase;
+  font-size: 20px;
+  color: #000;
+}
+
+section:not(:first-child){
+  border-top: 1px solid #000;
+  padding: 20px 0px;
+}
+
+button, input[type="button"]{
+  font-family: "anka";
+  border: 1px solid #000;
+  background: #FFF;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+label{
+  text-transform: uppercase; 
+  font-weight:normal;
+  margin-right: 10px;
+}
+
+/*input, select, textarea{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}*/
+
+input.col-2{
+  width: 100%;
+  margin-right: 25px;
+}
+
+textarea{
+ width: 100%;
+}
+
+#js-template{
+  display: none;
+}
+
+.gui-group{
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.simpleColorContainer{
+  flex-grow: 2;
+  flex-basis: 0;
+}
+
+.simpleColorChooser{
+  z-index: 20;
+}
+
+.simpleColorDisplay{
+  margin-top: -7px;
+}
+
+
+.hide{
+  display: none;
+}
+
+#ui-panel{
+  width: 340px;
+  background: lightgrey; 
+  padding: 20px;
+  position: fixed;
+  top: 0; 
+  right:0;
+  bottom: 0;
+}
+
+.topPanel{
+  border-bottom: 1px solid #000;
+}
+
+.scrollBox{
+  position: absolute;
+  top: 50px;
+  bottom: 65px;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.download-clear{
+  position: absolute;
+  bottom: -1px;
+  left:0;
+  width: 100%;
+  background: lightgrey;
+  display: flex;
+  padding: 20px 0;
+  justify-content: center;
+ 
+}
+
+.download-clear > div{
+  margin-right: 10px;
+}
+
+
+#canvas-wrapper{
+  width: calc(100% - 340px);
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+#poster{
+  background: #FFF; 
+  width: 29.7cm; 
+  height: 42cm;
+  margin:auto;
+  transform: scale(0.4);
+  transform-origin: top left;
+  margin-top: 25px;
+  margin-left: calc((100% - 340px) - ((100% - 340px) / 2));
+  padding: 1cm;
+  position: relative;
+}
+
+/*------------ Dynamic JS ---------------- */
+.block{
+  padding: 10px;
+  position: absolute;
+  top: 1cm;
+  left:5%;
+  z-index:1;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.block .info{
+  position: absolute;
+  font-size: 25px;
+  color: blue;
+  top: -35px;
+  left: 0;
+}
+
+.text-block{
+  border: 1px solid blue;
+  font-size: 40pt;
+}
+
+/* ----------- Preview mode ----------- */
+
+body.preview-mode{
+  background: #3F3F3F;
+}
+
+body.preview-mode .block .info{
+  display: none;
+}
+
+body.preview-mode .block{
+  border:none !important;
+}
+
+#preview button.active{
+  background: blue;
+  color: #FFF;
+}
+
+@media print{
+  @page{
+    size: A3;
+    margin:0;
+  }
+
+  #ui-panel{
+    display: none;
+  }
+
+  #canvas-wrapper{
+    width: 100%;
+    height: auto;
+  }
+
+  #poster{
+/*    width: 29.7cm; 
+    height: 42cm;*/
+    margin:0;
+    transform: scale(1);
+  }
+
+  .block .info{
+    display: none;
+  }
+
+  .block{
+    border:none !important;
+  }
+
+}
+
+
+
+
+
+
+
+
+
