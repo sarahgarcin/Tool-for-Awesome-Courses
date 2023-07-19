@@ -1,0 +1,69 @@
+/* load fonts */
+@font-face {
+    font-family: 'anka';
+    src: url('ankacoder-b-webfont.woff2') format('woff2'),
+        url('ankacoder-b-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'avara';
+    src: url('avara-webfont.woff2') format('woff2'),
+        url('avara-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'basemono';
+    src: url('basemononarrowot-bold-webfont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'millimetre';
+    src: url('Millimetre-Regular_web.woff2') format('woff2'),
+        url('Millimetre-Regular_web.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'savate';
+    src: url('savate-regular-webfont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sporting';
+    src: url('sporting_grotesque_gras-webfont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'solidmirage';
+    src: url('Solide_Mirage-Mono_web.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'terminal';
+    src: url('terminal-grotesque-webfont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+@font-face {
+    font-family: 'worksans';
+    src: url('WorkSans-Bold.woff2') format('woff2'),
+        url('WorkSans-Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

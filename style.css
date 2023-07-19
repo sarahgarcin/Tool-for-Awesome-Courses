@@ -1,37 +1,3 @@
-/* load fonts */
-@font-face {
-    font-family: 'anka';
-    src: url('fonts/ankacoder-b-webfont.woff2') format('woff2'),
-        url('fonts/ankacoder-b-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'avara';
-    src: url('fonts/avara-webfont.woff2') format('woff2'),
-        url('fonts/avara-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'millimetre';
-    src: url('fonts/Millimetre-Regular_web.woff2') format('woff2'),
-        url('fonts/Millimetre-Regular_web.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'worksans';
-    src: url('fonts/WorkSans-Bold.woff2') format('woff2'),
-        url('fonts/WorkSans-Bold.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-
 /* Vars */
 :root{
   --color-before : transparent;
@@ -68,6 +34,11 @@ h2{
   text-transform: uppercase;
   font-size: 20px;
   color: #000;
+}
+
+img{
+  width: 100%;
+  vertical-align: top;
 }
 
 section:not(:first-child){
@@ -109,8 +80,8 @@ textarea{
 }
 
 .gui-group{
-  display: flex;
-  align-items: center;
+/*  display: flex;
+  align-items: center;*/
   margin-bottom: 10px;
 }
 
@@ -130,6 +101,13 @@ textarea{
 
 .hide{
   display: none;
+}
+
+.preview-panel{
+  position: fixed;
+  z-index: 999;
+  top: 10px; 
+  left:10px;
 }
 
 #ui-panel{
@@ -191,6 +169,22 @@ textarea{
   margin-left: calc((100% - 340px) - ((100% - 340px) / 2));
   padding: 1cm;
   position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  /*background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='65px' width='65px'><text x='30' y='40' fill='000' font-size='40'></text></svg>");*/
+}
+
+/* ------ Background -------- */
+/* Generative */
+.shape{
+  width: 8cm;
+  height: 8cm;
+  /*background: #000;*/
+  /*position: absolute;*/
+}
+
+.shape.circle{
+  border-radius: 100%;
 }
 
 /*------------ Dynamic JS ---------------- */
@@ -198,7 +192,7 @@ textarea{
   padding: 10px;
   position: absolute;
   top: 1cm;
-  left:5%;
+  left:1cm;
   z-index:1;
   max-width: 100%;
   overflow-wrap: break-word;
@@ -217,11 +211,32 @@ textarea{
   font-size: 40pt;
 }
 
+.image-block {
+  border: 1px solid red;
+  padding: 0;
+}
+
+.image-block .info{
+  color: red;
+}
+
+.editCss{
+  height: 250px;
+}
+
+
+
 /* ----------- Preview mode ----------- */
 
 body.preview-mode{
   background: #3F3F3F;
 }
+
+
+body.preview-mode #poster{
+  overflow: hidden;
+}
+
 
 body.preview-mode .block .info{
   display: none;
@@ -242,7 +257,7 @@ body.preview-mode .block{
     margin:0;
   }
 
-  #ui-panel{
+  #ui-panel, #preview{
     display: none;
   }
 

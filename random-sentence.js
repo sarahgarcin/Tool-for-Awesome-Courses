@@ -23,9 +23,10 @@ let adjectives = [
 ];
 
 function randomSentence() {
-    let randIndex = Math.floor(Math.random() * nouns.length);
-    let randomNoun = nouns[randIndex];
-    let randomAdjective = adjectives[randIndex];
+    let randIndexNouns = Math.floor(Math.random() * nouns.length);
+    let randIndexAdj = Math.floor(Math.random() * adjectives.length);
+    let randomNoun = nouns[randIndexNouns];
+    let randomAdjective = adjectives[randIndexAdj];
     let result = randomNoun + " " + randomAdjective;
     return result;
 }

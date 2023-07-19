@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Tool for Awesome Courses</title>
-
+	<link rel="stylesheet" href="fonts/fonts.css">
 	<link rel="stylesheet" href="style.css">
 
 </head>
@@ -23,17 +23,26 @@
 			<div class="edit-functions">
 				<div class="text-position gui-group">
 					<label for="topPos">top</label>
-					<input type="number" class="topPos col-2" name="topPos" value="0">
+					<input type="number" class="topPos col-2" name="topPos" value="1">
 					<label for="leftPos">left</label>
-					<input type="number" class="leftPos col-2" name="leftPos" value="0">
+					<input type="number" class="leftPos col-2" name="leftPos" value="1">
+				</div>
+				<div class="gui-group z-index">
+					<label for="zIndex">z-index</label>
+					<input type="number" class="zIndex" name="zIndex" value="1">
 				</div>
 				<div class="choose-font gui-group">
 					<label for="fonts">font-family:</label> 
 					<select name="fonts" class="fonts"> 
 						<option value="monaco" default>Monaco</option> 
 						<option value="anka">Anka</option> 
-						<option value="avara">Avara</option> 
-						<option value="millimetre">Millimetre</option> 
+						<option value="avara">Avara</option>
+						<option value="basemono">Base Mono</option> 
+						<option value="millimetre">Millimetre</option>
+						<option value="savate">Savate</option> 
+						<option value="solidmirage">Solid Mirage</option> 
+						<option value="sporting">Sporting Grotesque</option> 
+						<option value="terminal">Terminal</option> 
 						<option value="worksans">Work Sans</option>
 					</select>
 				</div>
@@ -41,11 +50,73 @@
 					<label for="textColor">color:</label>
 					<input class="textColor" name="textColor" value="#000">
 				</div>
+				<div class="background-color gui-group">
+					<label for="backgroundColor">background-color:</label>
+					<input class="backgroundColor col-2" name="backgroundColor" value="transparent">
+				</div>
 				<div class="text-size gui-group">
 					<label for="textSize">font-size</label>
 					<input type="number" class="textSize" name="textSize" value="40">
 				</div>
+				<div class="text-width gui-group">
+					<label for="textWidth">width</label>
+					<input type="text" class="textWidth" name="textWidth" value="auto">
+				</div>
 			</div>
+			<!-- <div class="edit-css">
+				<h3>CSS</h3>
+				<textarea name="editCss" class="editCss">
+						padding: 10px;
+						position: absolute;
+						top: 1cm;
+						left:1cm;
+						z-index:1;
+						max-width: 100%;
+						overflow-wrap: break-word;
+						font-size: 40pt;
+				</textarea>
+			</div> -->
+		</div>
+		<figure id="js-template--block-image" class="block image-block">
+			<div class="info"></div>
+			<img src="">
+		</figure>
+		<div id="js-template--edit-image" class="edit edit-image">
+			<h2></h2>
+			<button class="delete-btn">X</button>
+			<div class="edit-functions">
+				<div class="text-position gui-group">
+					<label for="topPos">top</label>
+					<input type="number" class="topPos col-2" name="topPos" value="1">
+					<label for="leftPos">left</label>
+					<input type="number" class="leftPos col-2" name="leftPos" value="1">
+				</div>
+				<div class="gui-group z-index">
+					<label for="zIndex">z-index</label>
+					<input type="number" class="zIndex" name="zIndex" value="1">
+				</div>
+				<div class="text-width gui-group">
+					<label for="textWidth">width</label>
+					<input type="text" class="textWidth" name="textWidth" value="auto">
+				</div>
+				<div class="monochrome gui-group">
+					<label for="monochromeImage">monochrome:</label>
+					<input class="monochromeImage" name="monochromeImage" value="transparent">
+				</div>
+			</div>
+			<!-- <div class="edit-css">
+				<h3>CSS</h3>
+				<textarea name="editCss" class="editCss">
+						padding: 10px;
+						position: absolute;
+						top: 1cm;
+						left:1cm;
+						z-index:1;
+						max-width: 100%;
+						overflow-wrap: break-word;
+						font-size: 40pt;
+				</textarea>
+			</div> -->
 		</div>
 	</div>
 
@@ -60,8 +131,31 @@
 		<div class="scrollBox">
 			<section id="add-content">
 				<button type="text" id="add-text">+ Texte</button>
+				<input type="file" id="fileInput" accept="image/jpeg, image/png, image/jpg"/>
 			</section>
 			<section id="edit-content"></section>
+			<section id="edit-background">
+				<h2>Background</h2>
+				<div class="background-color-page gui-group">
+					<label for="backgroundColorPage">background-color:</label>
+					<input class="backgroundColorPage" name="backgroundColorPage" value="transparent">
+				</div>
+				<div class="background-textpattern-page gui-group">
+					<h3>Motif</h3>
+					<div>
+						<label for="pattern-text">unicode:</label>
+						<input class="pattern-text" name="pattern-text" value="">
+					</div>
+					<div>
+						<label for="pattern-text-color">color:</label>
+						<input class="pattern-text-color" name="pattern-text-color" value="#000">
+					</div>
+					<div>
+						<label for="pattern-text-size">font-size:</label>
+					<input class="pattern-text-size" name="pattern-text-size" value="40">
+					</div>
+				</div>
+			</section>
 			<section>
 				<h2>Background image</h2>
 				<div class="add-image gui-group">
