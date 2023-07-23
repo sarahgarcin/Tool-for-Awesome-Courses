@@ -145,6 +145,24 @@ function addBlock() {
     let textarea = newEditTxt.querySelector('.changeTxt');
     textarea.value = sentence;
 
+    // Ajouter le json correspondant au css
+    const jsonToAdd = {
+      "id": "#" + blockId,
+      "properties": {
+        "top": "1cm",
+        "left": "1cm",
+        "z-index": "1",
+        "font-family": "Anka, sans-serif",
+        "color": "#000",
+        "background-color": "transparent",
+        "font-size": "40pt",
+        "width":"auto"
+      }
+    };
+    cssJson.elements.push(jsonToAdd);
+    cssEditor.value = jsonToCss(cssJson);
+    // console.log(JSON.stringify(cssJson))
+
     // Resolve the promise with both the block and edit elements
     resolve({ block: newTxtBlock, edit: newEditTxt, id: blockId });
   });
@@ -158,6 +176,12 @@ function deleteBlock(e) {
     let blockToDel = document.getElementById(blockId);
     blockToDel.remove();
     blockParent.remove();
+
+    // Remove the css corresponding to the block
+    const elementIdToRemove = "#" + blockId;
+    cssJson.elements = cssJson.elements.filter((element) => element.id !== elementIdToRemove);
+    cssEditor.value = jsonToCss(cssJson);
+
     // Resolve the promise
     resolve();
   });
@@ -239,7 +263,8 @@ function editBlock(el, attr, target) {
     let blockParent;
     let blockId;
 
-    let blockToChange
+    let blockToChange;
+
     if(el != null){
       blockParent = target.closest(el);
     }
@@ -255,35 +280,51 @@ function editBlock(el, attr, target) {
     // Changer la position top et let
     if (target.classList.contains('topPos')) {
       blockToChange.style.top = value + "cm";
+      updateCss(cssJson, "#" + blockId, "top", value + "cm");
+      cssEditor.value = jsonToCss(cssJson);
     }
     if (target.classList.contains('leftPos')) {
       blockToChange.style.left = value + "cm";
+      updateCss(cssJson, "#" + blockId, "left", value + "cm");
+      cssEditor.value = jsonToCss(cssJson);
     }
 
     // Changer la font
     if (target.classList.contains('fonts')) {
       blockToChange.style.fontFamily = value;
+      updateCss(cssJson, "#" + blockId, "font-family", value);
+      cssEditor.value = jsonToCss(cssJson);
     }
 
     // Changer la couleur
     if (target.classList.contains('textColor')) {
       blockToChange.style.color = value;
+      updateCss(cssJson, "#" + blockId, "color", value);
+      cssEditor.value = jsonToCss(cssJson);
     }
     // Changer la taille du texte
     if (target.classList.contains('textSize')) {
       blockToChange.style.fontSize = value + "pt";
+      updateCss(cssJson, "#" + blockId, "font-size", value + "pt");
+      cssEditor.value = jsonToCss(cssJson);
     }
     // Changer le z-index du texte
     if (target.classList.contains('zIndex')) {
       blockToChange.style.zIndex = value;
+      updateCss(cssJson, "#" + blockId, "z-index", value);
+      cssEditor.value = jsonToCss(cssJson);
     }
     // Changer la couleur de fond du texte
     if (target.classList.contains('backgroundColor')) {
       blockToChange.style.backgroundColor = value;
+      updateCss(cssJson, "#" + blockId, "background-color", value);
+      cssEditor.value = jsonToCss(cssJson);
     }
     // Changer la largeur du texte
     if (target.classList.contains('textWidth')) {
       blockToChange.style.width = value + "cm";
+      updateCss(cssJson, "#" + blockId, "width", value + "cm");
+      cssEditor.value = jsonToCss(cssJson);
     }
 
     // ---- IMAGE -----
@@ -291,7 +332,7 @@ function editBlock(el, attr, target) {
     if (target.classList.contains('monochromeImage')) {
       blockToChange.style.background = value;
       let blockImgToChange = blockToChange.querySelector('img');
-      blockImgToChange.style.filter = "grayscale(1) contraste(1.5)";
+      blockImgToChange.style.filter = "grayscale(1) contrast(1.5)";
       blockImgToChange.style.mixBlendMode = "screen";
     }
 
@@ -486,6 +527,50 @@ function updateUiPanelValue(id, properties){
     let backgroundColorField = document.querySelector('.backgroundColorPage');
     backgroundColorField.value = backgroundVal;
   }
+  // si on applique sur un block
+  else{
+    let cleanId = id.replace('#', '');
+
+    // background color
+    let backgroundValEl = properties["background-color"];
+    let backgroundColorFieldEl = document.querySelector("[data-id='" + cleanId + "'] .backgroundColor");
+    backgroundColorFieldEl.value = backgroundValEl;
+
+    // top / left values
+    let topValEl = properties["top"].replace('cm', '');
+    let topFieldEl = document.querySelector("[data-id='" + cleanId + "'] .topPos");
+    topFieldEl.value = parseFloat(topValEl);
+
+    let leftValEl = properties["left"].replace('cm', '');
+    let leftFieldEl = document.querySelector("[data-id='" + cleanId + "'] .leftPos");
+    leftFieldEl.value = parseFloat(leftValEl);
+
+    // z-index
+    let zIndexValEl = properties["z-index"];
+    let zIndexFieldEl = document.querySelector("[data-id='" + cleanId + "'] .zIndex");
+    zIndexFieldEl.value = parseInt(zIndexValEl); 
+
+    // font-family
+    let fontValEl = properties["font-family"];
+    let fontFieldEl = document.querySelector("[data-id='" + cleanId + "'] .fonts");
+    fontFieldEl.value = fontValEl; 
+
+    // color
+    let colorValEl = properties["color"];
+    let colorFieldEl = document.querySelector("[data-id='" + cleanId + "'] .textColor");
+    colorFieldEl.value = colorValEl;
+
+    // font-size
+    let fontSizeValEl = properties["font-size"].replace('pt', '');
+    let fontSizeFieldEl = document.querySelector("[data-id='" + cleanId + "'] .textSize");
+    fontSizeFieldEl.value = parseFloat(fontSizeValEl);
+
+    // width
+    let widthValEl = properties["width"].replace('cm', '');
+    let widthFieldEl = document.querySelector("[data-id='" + cleanId + "'] .textWidth");
+    widthFieldEl.value = parseFloat(widthValEl);    
+
+  }
 }
 
 // function to update progression bar
@@ -493,6 +578,6 @@ function updateProgressBar(jsonString) {
   const lines = jsonString.split('\n');
   const nbOfLines = lines.length;
   progressionBar.style.width = (nbOfLines * 4) + "px";
-  console.log(nbOfLines + "px");
+  // console.log(nbOfLines + "px");
 }
 

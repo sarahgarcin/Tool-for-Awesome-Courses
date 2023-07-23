@@ -393,6 +393,10 @@ textarea{
   margin-left: 0;
 }
 
+#preview.active, #grid-btn.active{
+  background-color: var(--color);
+}
+
 
 
 /* ----------- Preview mode ----------- */
