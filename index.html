@@ -34,10 +34,10 @@
 				<div class="choose-font gui-group">
 					<label for="fonts">font-family:</label> 
 					<select name="fonts" class="fonts"> 
-						<option value="monaco" default>Monaco</option> 
-						<option value="anka">Anka</option> 
+						<option value="anka" default>Anka</option> 
 						<option value="avara">Avara</option>
 						<option value="basemono">Base Mono</option> 
+						<option value="monaco">Monaco</option> 
 						<option value="millimetre">Millimetre</option>
 						<option value="savate">Savate</option> 
 						<option value="solidmirage">Solid Mirage</option> 
@@ -48,11 +48,11 @@
 				</div>
 				<div class="text-color gui-group">
 					<label for="textColor">color:</label>
-					<input class="textColor" name="textColor" value="#000">
+					<input type="text" class="textColor" name="textColor" value="#000">
 				</div>
 				<div class="background-color gui-group">
 					<label for="backgroundColor">background-color:</label>
-					<input class="backgroundColor col-2" name="backgroundColor" value="transparent">
+					<input type="text" class="backgroundColor col-2" name="backgroundColor" value="transparent">
 				</div>
 				<div class="text-size gui-group">
 					<label for="textSize">font-size</label>
@@ -63,19 +63,6 @@
 					<input type="text" class="textWidth" name="textWidth" value="auto">
 				</div>
 			</div>
-			<!-- <div class="edit-css">
-				<h3>CSS</h3>
-				<textarea name="editCss" class="editCss">
-						padding: 10px;
-						position: absolute;
-						top: 1cm;
-						left:1cm;
-						z-index:1;
-						max-width: 100%;
-						overflow-wrap: break-word;
-						font-size: 40pt;
-				</textarea>
-			</div> -->
 		</div>
 		<figure id="js-template--block-image" class="block image-block">
 			<div class="info"></div>
@@ -101,149 +88,187 @@
 				</div>
 				<div class="monochrome gui-group">
 					<label for="monochromeImage">monochrome:</label>
-					<input class="monochromeImage" name="monochromeImage" value="transparent">
+					<input type="text" class="monochromeImage" name="monochromeImage" value="transparent">
 				</div>
 			</div>
-			<!-- <div class="edit-css">
-				<h3>CSS</h3>
-				<textarea name="editCss" class="editCss">
-						padding: 10px;
-						position: absolute;
-						top: 1cm;
-						left:1cm;
-						z-index:1;
-						max-width: 100%;
-						overflow-wrap: break-word;
-						font-size: 40pt;
-				</textarea>
-			</div> -->
 		</div>
 	</div>
 
 	<div class="preview-panel">
-		<button id ="preview" type="text">Aperçu</button>
+		<button id="preview" type="text">Aperçu</button>
+		<button id="grid-btn" type="text">Grille</button>
 	</div>
 
+	<div id="css-panel">
+		<h2>CSS</h2>
+		<textarea id="editCss"></textarea>
+	</div>
 	<div id="ui-panel">
-		<div class="topPanel">
+<!-- 		<div class="topPanel">
 			<h1>Tool for Awesome Icons</h1>
-		</div>
+		</div> -->
 		<div class="scrollBox">
 			<section id="add-content">
+				<h2>Ajouter un élément</h2>
 				<button type="text" id="add-text">+ Texte</button>
 				<input type="file" id="fileInput" accept="image/jpeg, image/png, image/jpg"/>
+				<label for="fileInput">+ Image</label>
 			</section>
 			<section id="edit-content"></section>
 			<section id="edit-background">
 				<h2>Background</h2>
 				<div class="background-color-page gui-group">
 					<label for="backgroundColorPage">background-color:</label>
-					<input class="backgroundColorPage" name="backgroundColorPage" value="transparent">
+					<input type="text" class="backgroundColorPage" name="backgroundColorPage" value="white">
 				</div>
 				<div class="background-textpattern-page gui-group">
 					<h3>Motif</h3>
 					<div>
 						<label for="pattern-text">unicode:</label>
-						<input class="pattern-text" name="pattern-text" value="">
+						<input type="text" class="pattern-text" name="pattern-text" value="">
 					</div>
 					<div>
 						<label for="pattern-text-color">color:</label>
-						<input class="pattern-text-color" name="pattern-text-color" value="#000">
+						<input type="text" class="pattern-text-color" name="pattern-text-color" value="#000">
 					</div>
 					<div>
 						<label for="pattern-text-size">font-size:</label>
-					<input class="pattern-text-size" name="pattern-text-size" value="40">
+					<input type="number" class="pattern-text-size" name="pattern-text-size" value="40">
 					</div>
 				</div>
-			</section>
-			<section>
-				<h2>Background image</h2>
-				<div class="add-image gui-group">
-					<label>Image File:</label><br/>
-					<input type="file" id="fileInput" accept="image/jpeg, image/png, image/jpg"/>
-					<!-- save btn -->
-					<button class="btn crop hide">Crop</button>
+				<div class="background-pattern-page gui-group">
+					<h3>Motif Génératif</h3>
+					<div class="row">
+						<div>
+				      <input type="checkbox" id="circles" name="circles" checked>
+				      <label for="circles">cercles</label>
+				    </div>
+				    <div>
+				      <input type="checkbox" id="rectangles" name="rectangles" checked>
+				      <label for="rectangles">rectangles</label>
+				    </div>
+					</div>
+					<div>
+						<label for="pattern-color-1">couleur 1:</label>
+						<input type="text" id="pattern-color-1" name="pattern-color-1" value="magenta">
+					</div>
+					<div>
+						<label for="pattern-color-2">couleur 2:</label>
+						<input type="text" id="pattern-color-2" name="pattern-color-2" value="cyan">
+					</div>
+					<div>
+						<label for="pattern-number">nombre d’éléments:</label>
+						<input type="number" id="pattern-number" name="pattern-number" value="100">
+					</div>
+					<div>
+						<label for="pattern-min-width">min width:</label>
+						<input type="number" id="pattern-min-width" name="pattern-min-width" value="0.5">
+						<label for="pattern-max-width">max width:</label>
+						<input type="number" id="pattern-max-width" name="pattern-max-width" value="3">
+					</div>
+					<div>
+						<label for="pattern-min-height">min height:</label>
+						<input type="number" id="pattern-min-height" name="pattern-min-height" value="1">
+						<label for="pattern-max-height">max height:</label>
+						<input type="number" id="pattern-max-height" name="pattern-max-height" value="10">
+					</div>
 				</div>
-				<div class="choose-color">
-					<div class="choose-color-inner gui-group">
-						<label for="imageColor">Image color</label>
-			      <input id="imageColor" name="imageColor" value="#000">
-		    	</div>
-		    	<div class="choose-color-inner gui-group">
-		    		<label for="imageColorAfter">Image color n°2</label>
-			    	<input id="imageColorAfter" name="imageColorAfter" value="#FFF">
-			    </div>
-				</div>
-			</section>
-			<section>
-				<h2>Text setting</h2>
-				<div class="add-text gui-group">
-					<label for="iconText">Text</label>
-					<textarea name="iconText" id="iconText"></textarea>
-				</div>
-				<div class="choose-font gui-group">
-					<label for="fonts">Choose a font:</label>
-					<select name="fonts" id="fonts">
-						<option value="monaco" default>Monaco</option>
-					  <option value="anka">Anka</option>
-					  <option value="avara">Avara</option>
-					  <option value="millimetre">Millimetre</option>
-					  <option value="worksans">Work Sans</option>
-					</select> 
-				</div>
-				<div class="text-color gui-group">
-					<label for="textColor">Text color</label>
-					<input id="textColor" name="textColor"
-		           value="#000">
-				</div>
-				<div class="text-size gui-group">
-					<label for="textSize">Text size</label>
-					  <input type="range" id="textSize" name="textSize"
-	         min="12" max="70" default="30">
-				</div>
-			</section>
-			<section>
-				<h2>Let's get fancy</h2>
-				<div class="shape gui-group">
-					<label for="addShape">Add background shape</label>
-					<select name="addShape" id="addShape">
-						<option value="none" default>None</option>
-					  <option value="square">Square</option>
-					  <option value="rounded">Rounded</option>
-					  <option value="circle">Circle</option>
-					</select> 
-				</div>
-				<div class="shape-color gui-group">
-					<label for="shapeColor">Shape color</label>
-					<input id="shapeColor" name="shapeColor"
-		           value="#FFF">
-				</div>
-				<div class="text-opacity gui-group">
-					<label for="textOpacity">Opacity</label>
-					  <input type="range" id="textOpacity" name="textOpacity"
-	         min="0" max="1" default="1" step="0.1">
-				</div>
+				<button type="text" id="generate-pattern-btn">Générer</button>
 			</section>
 		</div>
-		<section class="download-clear">
-			<div class="download">
-				<button id="downloadLnk">Download as image</button>
-			</div>
-			<div class="Clear">
-				<button id="clearBtn">Clear</button>
-			</div>
-		</section>
 	</div>
 	
 	<div id="canvas-wrapper">
 		<div id="poster">
+			<div id="generative-background"></div>
+			<div id="grid">
+				<div id="grid-col">
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+					<div class="grid-el-col"></div>
+				</div>
+				<div id="grid-row">
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+					<div class="grid-el-row"></div>
+				</div>
+			</div>
 		</div>
 	</div>
+
+	<div id="progression"></div>
+
 	
 		
 <script src="jquery-3.4.1.min.js" type="text/javascript"></script>
 <script src="jquery.simple-color.min.js" type="text/javascript"></script>
 <script src="random-sentence.js" type="text/javascript"></script>
+<script src="css-json.js" type="text/javascript"></script>
 <script src="script.js" type="text/javascript"></script>
 
 </body>

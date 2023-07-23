@@ -5,9 +5,18 @@ const templateEditTxt = document.getElementById('js-template--edit-text');
 const templateBlockImg = document.getElementById('js-template--block-image');
 const templateEditImg = document.getElementById('js-template--edit-image');
 const previewBtn = document.getElementById('preview');
+const gridBtn = document.getElementById('grid-btn');
 const addTxtBtn = document.getElementById('add-text'); 
-const addImgBtn = document.getElementById('fileInput'); 
+const addImgBtn = document.getElementById('fileInput');
+const generatePatternBtn = document.getElementById('generate-pattern-btn'); 
+const grid = document.getElementById('grid');
+const generativeBackground = document.getElementById('generative-background'); 
 let blockCounter = 0;
+
+const cssEditor = document.getElementById('editCss');
+const progressionBar = document.getElementById('progression');
+
+// console.log(getComputedStyle(poster));
 
 // launch init fuction
 init();
@@ -17,9 +26,14 @@ async function init(){
     document.body.addEventListener('keyup', handleKeyUp);
     document.body.addEventListener('change', handleChange);
     previewBtn.addEventListener('click', tooglePreview);
+    gridBtn.addEventListener('click', toogleGrid);
     addTxtBtn.addEventListener('click', addNewBlock);
     addImgBtn.addEventListener('change', addNewImage);
+    generatePatternBtn.addEventListener('click', addBackgroundPattern);
     document.body.addEventListener('click', handleClick);
+
+    // add css to the css panel
+    cssEditor.value = jsonToCss(cssJson);
 
     console.log('Welcome to TAC');
     resolve('init-done');
@@ -43,11 +57,18 @@ function handleKeyUp(e){
       editBlock('.edit', 'data-id', target);
   }
   // edition du background
-  // En cours d'écriture !!!!
   if(target.classList.contains('backgroundColorPage') || target.classList.contains('pattern-text') || 
     target.classList.contains('pattern-text-color') ||
     target.classList.contains('pattern-text-size')){
     editBackground(target);
+  }
+  // edition de l'éditeur css 
+  if(target.id == "editCss"){
+    const cssEditorVal = cssEditor.value;
+    const cssJson = cssToJson(cssEditorVal);
+    const cssJsonString = JSON.stringify(cssJson, null, 2);
+    applyCssFromJson(cssJson);
+    updateProgressBar(cssJsonString); 
   }
 }
 
@@ -70,6 +91,20 @@ function tooglePreview(e){
   else{
     btn.classList.add('active');
     document.body.classList.add('preview-mode');
+  }
+}
+
+// Fonction affichage de la grille 
+function toogleGrid(e){
+  const btn = e.target;
+  console.log('grid mode');
+  if (btn.classList.contains('active')) {
+    btn.classList.remove('active');
+    grid.classList.remove('active');
+  }
+  else{
+    btn.classList.add('active');
+     grid.classList.add('active');
   }
 }
 
@@ -130,6 +165,7 @@ function deleteBlock(e) {
 
 // Fonction ajouter un nouveau block Image
 function addNewImage(e){
+  console.log(e.target.files);
   if (e.target.files.length) {
     // start file reader
     const reader = new FileReader();
@@ -170,9 +206,18 @@ function editBackground(target) {
     // Changer la couleur du fond
     if (target.classList.contains('backgroundColorPage')) {
       poster.style.backgroundColor = value;
+      updateCss(cssJson, "#poster", "background", value);
+      cssEditor.value = jsonToCss(cssJson);
+      // possible d'ajouter un check erro
+        // const changed = updateCss(cssJson, "#poster", "background", value);
+        // if (changed) {
+        //   console.log("Property changed successfully!");
+        //   console.log(jsonToCss(cssJson));
+        // } else {
+        //   console.log("Property not found or JSON structure not valid.");
+        // }
     }
 
-    // En cours d'édition
     if(target.classList.contains('pattern-text') || 
     target.classList.contains('pattern-text-color') ||
     target.classList.contains('pattern-text-size')){
@@ -182,7 +227,7 @@ function editBackground(target) {
       let patternTextSize = document.querySelector('.pattern-text-size').value;
       let backgroundPatternCSS = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='65px' width='65px'><text x='30' y='40' fill='"+patternTextColorClean+"' font-size='"+patternTextSize+"'>"+patternText+"</text></svg>";
       // console.log(backgroundPatternCSS,  poster.style);
-      poster.style.backgroundImage = `url("`+backgroundPatternCSS+`")`;;
+      poster.style.backgroundImage = `url("`+backgroundPatternCSS+`")`;
     }
   });
 }
@@ -255,20 +300,51 @@ function editBlock(el, attr, target) {
   });
 }
 
-generatePattern();
+// Fonction qui récupère les infos pour le background pattern et qui génère un pattern
+function addBackgroundPattern(){
+  let shapes = [];
+  let colors = [];
+  const circlesCheck = document.getElementById('circles');
+  const rectanglesCheck = document.getElementById('rectangles');
+  const color1 = document.getElementById('pattern-color-1').value;
+  const color2 = document.getElementById('pattern-color-2').value;
+  const patternNumber = document.getElementById('pattern-number').value;
+  const patternMinWidth = document.getElementById('pattern-min-width').value;
+  const patternMaxWidth = document.getElementById('pattern-max-width').value;
+  const patternMinHeight = document.getElementById('pattern-min-height').value;
+  const patternMaxHeight = document.getElementById('pattern-max-height').value;
+
+  if(circlesCheck.checked){
+    shapes.push('circle');
+  }
+  if(rectanglesCheck.checked){
+    shapes.push('rectangle');
+  }
+  colors.push(color1);
+  colors.push(color2);
+
+  generatePattern(colors, shapes, patternNumber, patternMinWidth, patternMaxWidth, patternMinHeight, patternMaxHeight);
+}
 
 // Fonction de génération d'un motif en fond
-function generatePattern() {
+function generatePattern(colorsArr, shapesArr, number, minW, maxW, minH, maxH) {
+  // console.log(colorsArr, shapesArr, number, minW, maxW, minH, maxH);
   // const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
-  const colors = ['magenta', '#000'];
-  const shapes = ['circle', 'rectangle'];
+  // const colors = ['magenta', '#000'];
+  // const shapes = ['circle', 'rectangle'];
+  const colors = colorsArr;
+  const shapes = shapesArr;
 
-  for (let i = 0; i < 200; i++) {
+  // vider le background
+  generativeBackground.innerHTML = "";
+
+  for (let i = 0; i < number; i++) {
     const shape = document.createElement('div');
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
-    const width = Math.floor(Math.random() * 50) + 20;
-    const height = Math.floor(Math.random() * 220) + 50;
+    const width = Math.floor(Math.random() * parseFloat(maxW)) + parseFloat(minW);
+    const height = Math.floor(Math.random() * parseFloat(maxH)) + parseFloat(minH);
+    // console.log(width, height);
 
     shape.classList.add('shape');
     shape.style.backgroundColor = randomColor;
@@ -279,172 +355,144 @@ function generatePattern() {
       shape.classList.add('rectangle');
     }
 
-    shape.style.width = width + 'px';
-    shape.style.height = height + 'px';
-
-    poster.appendChild(shape);
+    shape.style.width = width + 'cm';
+    shape.style.height = height + 'cm';
+    // console.log(shape);
+    generativeBackground.appendChild(shape);
   }
 }
 
-// ----- OLD CODE ------
 
-// color picker init
-$('#imageColor').simpleColor({
-  boxWidth: "30px",
-  boxHeight: "30px",
-  cellWidth: 12,
-  cellHeight: 12,
-  columns:13
-});
+// Fonction update CSS du gui-panel vers l'editeur css
+function updateCss(jsonObj, elementId, propertyName, newValue) {
+  // Check if the JSON object contains an "elements" property and it is an array
+  if (jsonObj.hasOwnProperty('elements') && Array.isArray(jsonObj.elements)) {
+    const elements = jsonObj.elements;
 
-$('#imageColorAfter').simpleColor({
-  boxWidth: "30px",
-  boxHeight: "30px",
-  cellWidth: 12,
-  cellHeight: 12,
-  columns:13
-});
+    // Loop through all elements
+    for (const elementObj of elements) {
+      // Check if the element object contains an "id" property and a "properties" property
+      if (elementObj.hasOwnProperty('id') && elementObj.hasOwnProperty('properties')) {
+        const id = elementObj.id;
+        const properties = elementObj.properties;
 
-$('#textColor').simpleColor({
-  boxWidth: "30px",
-  boxHeight: "30px",
-  cellWidth: 12,
-  cellHeight: 12,
-  columns:13
-});
-
-$('#shapeColor').simpleColor({
-  boxWidth: "30px",
-  boxHeight: "30px",
-  cellWidth: 12,
-  cellHeight: 12,
-  columns:13
-});
-
-$("#iconText").keyup(function(){
-  var textToAdd = $("#iconText").val();
-  $("#textResult").html(textToAdd);
-});
-
-
-$('#fonts').on('change', function(){
-  var fontChoosen = $(this).val();
-  $("#textResult").css('font-family', fontChoosen);
-}); 
-
-$('#textSize').on('change', function(){
-  var size = $(this).val() * 5;
-  $("#textResult").css('font-size', size+"px");
-});
-
-$('#textOpacity').on('change', function(){
-  var opacity = $(this).val();
-  $("#textResult").css('opacity', opacity);
-});
-
-$('#shapeColor').on('change', function(){
-  var shapeColor = $('#shapeColor').val();
-  $("#textResult").css('background', shapeColor);
-}); 
-
-$('#addShape').on('change', function(){
-  var shapeChoosen = $(this).val();
-  var shapeColor = $('#shapeColor').val();
-  if(shapeChoosen == "square"){
-    $("#textResult").css({
-      'background' : shapeColor,
-      'padding' : "calc(20px * 5)",
-      'border-radius' : "0px"  
-    });
+        // Check if the element ID matches the target ID
+        if (id === elementId) {
+          // Change the property if it exists in the properties object
+          if (properties.hasOwnProperty(propertyName)) {
+            properties[propertyName] = newValue;
+            return true; // Property changed successfully
+          }
+        }
+      }
+    }
   }
-  else if(shapeChoosen == "rounded"){
-    $("#textResult").css({
-      'background' : shapeColor,
-      'padding' : "calc(20px * 5)", 
-      'border-radius' : "20px" 
-    });
+
+  return false; // Property not found or JSON structure not valid
+}
+
+// convert json object to css
+function jsonToCss(jsonObj) {
+  let cssText = '';
+
+  // Check if the JSON object contains an "elements" property and it is an array
+  if (jsonObj.hasOwnProperty('elements') && Array.isArray(jsonObj.elements)) {
+    const elements = jsonObj.elements;
+
+    // Loop through all elements
+    for (const elementObj of elements) {
+      // Check if the element object contains an "id" property and a "properties" property
+      if (elementObj.hasOwnProperty('id') && elementObj.hasOwnProperty('properties')) {
+        const elementId = elementObj.id;
+        const properties = elementObj.properties;
+
+        // Loop through all properties and add them to the CSS string
+        cssText += `${elementId} {\n`;
+        for (const prop in properties) {
+          if (properties.hasOwnProperty(prop)) {
+            const value = properties[prop];
+            cssText += `${prop}: ${value};\n`;
+          }
+        }
+        cssText += "}\n\n";
+      }
+    }
   }
-  else if(shapeChoosen == "circle"){
-    $("#textResult").css({
-      'background' : shapeColor,
-      'padding' : "calc(30px * 5) calc(30px * 5)", 
-      'border-radius' : "50%" 
-    });
-  }
-  else{
-    $("#textResult").css({
-      'background' : 'transparent',
-      'padding' : "0px", 
-      'border-radius' : "0" 
-    });
-  }
-  
-}); 
 
-
-$('#clearBtn').on('click', function(){
-  location.reload(true);
-});
-
-
-
-// upload image and crop
-// vars
-let result = document.getElementById('imageResult'),
-save = document.querySelector('.crop'),
-img,
-cropper = '';
-
-// on change show image with crop options
-// $('#fileInput').on('change', (e) => {
-//   if (e.target.files.length) {
-//     // start file reader
-//     const reader = new FileReader();
-//     reader.onload = (e)=> {
-//       if(e.target.result){
-//         // create new image
-//         img = document.createElement('img');
-//         img.id = 'image';
-//         img.src = e.target.result
-//         // clean result before
-//         result.innerHTML = '';
-//         // append new image
-//         result.appendChild(img);
-//         // show save btn and options
-//         save.classList.remove('hide');
-//         // options.classList.remove('hide');
-//         // init cropper
-//         cropper = new Cropper(img, {
-//           aspectRatio: 1 / 1
-//         });
-//       }
-//     };
-//     reader.readAsDataURL(e.target.files[0]);
-//   }
-// });
-
-$('#imageColor').on('change', function(){
-  var colorBefore = $("#imageColor").val();
-  myFunction_set("--color-before", colorBefore);
-});
-
-$('#imageColorAfter').on('change', function(){
-  var colorAfter = $("#imageColorAfter").val();
-  myFunction_set("--color-after", colorAfter);
-});
-
-$('#textColor').on('change', function(){
-  var textColor = $("#textColor").val();
-  $("#textResult").css("color", textColor);
-});
-
-function myFunction_set(varName, value) {
-  var r = document.querySelector(':root');
-  // Set the value of variable to another value 
-  r.style.setProperty(varName, value);
+  return cssText;
 }
 
 
+// convert css text to json
+function cssToJson(cssString) {
+  const cssJson = { elements: [] };
+  const cssRules = cssString.split('}');
 
+  for (const rule of cssRules) {
+    const trimmedRule = rule.trim();
+    if (trimmedRule.length > 0) {
+      const parts = trimmedRule.split('{');
+      if (parts.length === 2) {
+        const selector = parts[0].trim();
+        const properties = parts[1].trim().split(';').filter(Boolean);
 
+        const elementObj = { id: selector, properties: {} };
+        for (const prop of properties) {
+          const [property, value] = prop.split(':').map(item => item.trim());
+          elementObj.properties[property] = value;
+        }
+
+        cssJson.elements.push(elementObj);
+      }
+    }
+  }
+
+  return cssJson;
+}
+
+// apply css to an element from json 
+function applyCssToElement(element, cssProperties) {
+  for (const prop in cssProperties) {
+    if (cssProperties.hasOwnProperty(prop)) {
+      element.style[prop] = cssProperties[prop];
+    }
+  }
+}
+
+// Function to apply CSS to the elements based on the JSON representation
+function applyCssFromJson(cssJson) {
+  if (cssJson.hasOwnProperty('elements') && Array.isArray(cssJson.elements)) {
+    const elements = cssJson.elements;
+    for (const elementObj of elements) {
+      const selector = elementObj.id;
+      const properties = elementObj.properties;
+      // Get the element based on the selector (ID or class)
+      const elementsToStyle = document.querySelectorAll(selector);
+
+      // Apply the styles to all matching elements
+      for (const element of elementsToStyle) {
+        applyCssToElement(element, properties);
+        updateUiPanelValue(selector, properties);
+      }
+    }
+  }
+}
+
+// Function to update values in fields in panel 
+function updateUiPanelValue(id, properties){
+  // console.log(id, properties);
+  if(id == "#poster"){
+    let backgroundVal = properties["background"];
+    let backgroundColorField = document.querySelector('.backgroundColorPage');
+    backgroundColorField.value = backgroundVal;
+  }
+}
+
+// function to update progression bar
+function updateProgressBar(jsonString) {
+  const lines = jsonString.split('\n');
+  const nbOfLines = lines.length;
+  progressionBar.style.width = (nbOfLines * 4) + "px";
+  console.log(nbOfLines + "px");
+}
 

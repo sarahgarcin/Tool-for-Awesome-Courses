@@ -1,5 +1,11 @@
 # TO DO
-- Ajouter une grille
+- Design / Ergonomie / responsive !!
+- Ajouter la sligoil dans les fonts
+- Bug à l'ajout d'une image
+- Faire en sorte que tout se mette à jour à droite dans le panneau gui en fonction de l'éditeur css + que tout s'enregistre bien dans le json 
+- Store json into sessionStorage
+  + https://stackoverflow.com/questions/6193574/save-javascript-objects-in-sessionstorage
+- Ajouter un onglet HTML pour faire apparaître le HTML
 - Ajouter un bouton zoom 
 - Ajouter des promises dans addNewImage
 - Cleaner les noms des inputs (enlever TxtWidth pour remplacer par blockWidth par exemple -- puisque ça s'applique aux deux)
@@ -12,6 +18,7 @@
 
 
 # DONE 
+- ok - Ajouter une grille
 - ok - Ajouter des promises
 - ok - Ajouter des fonctions -- notamment pour les modifictions qui sont toujours les mêmes…
 - ok - Ajouter des templates model dans le html à cloner dans le js
