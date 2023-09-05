@@ -16,6 +16,9 @@ let blockCounter = 0;
 const cssEditor = document.getElementById('editCss');
 const progressionBar = document.getElementById('progression');
 
+let monochromeImageKeypress = 0;
+let backgroundTextPatternKeypress = 0;
+
 // console.log(getComputedStyle(poster));
 
 // launch init fuction
@@ -53,7 +56,7 @@ function handleClick(e) {
 function handleKeyUp(e){
   let target = e.target;
   // edition des blocs
-  if (target.classList.contains('changeTxt') || target.classList.contains('topPos') || target.classList.contains('leftPos') || target.classList.contains('textColor') || target.classList.contains('textSize') || target.classList.contains('zIndex') || target.classList.contains('backgroundColor') || target.classList.contains('textWidth') || target.classList.contains('monochromeImage')) {
+  if (target.classList.contains('changeTxt') || target.classList.contains('topPos') || target.classList.contains('leftPos') || target.classList.contains('textColor') || target.classList.contains('textSize') || target.classList.contains('zIndex') || target.classList.contains('backgroundColor') || target.classList.contains('blockWidth') || target.classList.contains('monochromeImage')) {
       editBlock('.edit', 'data-id', target);
   }
   // edition du background
@@ -65,7 +68,7 @@ function handleKeyUp(e){
   // edition de l'éditeur css 
   if(target.id == "editCss"){
     const cssEditorVal = cssEditor.value;
-    const cssJson = cssToJson(cssEditorVal);
+    cssJson = cssToJson(cssEditorVal);
     const cssJsonString = JSON.stringify(cssJson, null, 2);
     applyCssFromJson(cssJson);
     updateProgressBar(cssJsonString); 
@@ -156,7 +159,7 @@ function addBlock() {
         "color": "#000",
         "background-color": "transparent",
         "font-size": "40pt",
-        "width":"auto"
+        "width":"90%"
       }
     };
     cssJson.elements.push(jsonToAdd);
@@ -216,6 +219,20 @@ function addNewImage(e){
         let newEditImgTitle = newEditImg.querySelector('h2');
         newEditImgTitle.innerHTML = '#' + blockId;
         editContent.appendChild(newEditImg);
+
+        // Ajouter le json correspondant au css
+        const jsonToAdd = {
+          "id": "#" + blockId,
+          "properties": {
+            "top": "1cm",
+            "left": "1cm",
+            "z-index": "1",
+            "background": "transparent",
+            "width":"90%"
+          }
+        };
+        cssJson.elements.push(jsonToAdd);
+        cssEditor.value = jsonToCss(cssJson);
       }
     };
     reader.readAsDataURL(e.target.files[0]);
@@ -232,7 +249,7 @@ function editBackground(target) {
       poster.style.backgroundColor = value;
       updateCss(cssJson, "#poster", "background", value);
       cssEditor.value = jsonToCss(cssJson);
-      // possible d'ajouter un check erro
+      // possible d'ajouter un check error
         // const changed = updateCss(cssJson, "#poster", "background", value);
         // if (changed) {
         //   console.log("Property changed successfully!");
@@ -252,6 +269,11 @@ function editBackground(target) {
       let backgroundPatternCSS = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='65px' width='65px'><text x='30' y='40' fill='"+patternTextColorClean+"' font-size='"+patternTextSize+"'>"+patternText+"</text></svg>";
       // console.log(backgroundPatternCSS,  poster.style);
       poster.style.backgroundImage = `url("`+backgroundPatternCSS+`")`;
+
+      // Update CSS - pour l'instant je l'enlève ça complexifie pas mal…
+      // const backgroundTextCSSToAdd = "url(data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='65px' width='65px'><text x='30' y='40' fill='"+patternTextColorClean+"' font-size='"+patternTextSize+"'>"+patternText+"</text></svg>)";
+      // updateCss(cssJson, "#poster", "background-image", backgroundTextCSSToAdd);
+      // cssEditor.value = jsonToCss(cssJson);
     }
   });
 }
@@ -321,9 +343,9 @@ function editBlock(el, attr, target) {
       cssEditor.value = jsonToCss(cssJson);
     }
     // Changer la largeur du texte
-    if (target.classList.contains('textWidth')) {
-      blockToChange.style.width = value + "cm";
-      updateCss(cssJson, "#" + blockId, "width", value + "cm");
+    if (target.classList.contains('blockWidth')) {
+      blockToChange.style.width = value + "%";
+      updateCss(cssJson, "#" + blockId, "width", value + "%");
       cssEditor.value = jsonToCss(cssJson);
     }
 
@@ -334,6 +356,24 @@ function editBlock(el, attr, target) {
       let blockImgToChange = blockToChange.querySelector('img');
       blockImgToChange.style.filter = "grayscale(1) contrast(1.5)";
       blockImgToChange.style.mixBlendMode = "screen";
+
+      // pour que le css #block img filter se rajoute qu'une seule fois, on ajoute le css une seule fois au premier keypress.
+      monochromeImageKeypress ++;
+
+      // ajouter le css correspondant dans le textarea
+      if(monochromeImageKeypress == 1){
+        const jsonToAddImg = {
+          "id": "#" + blockId + " img", 
+          "properties": {
+            "filter": "grayscale(1) contrast(1.5)",
+            "mix-blend-mode": "screen",
+          }
+        };
+        cssJson.elements.push(jsonToAddImg);
+      }
+
+      updateCss(cssJson, "#" + blockId, "background", value);
+      cssEditor.value = jsonToCss(cssJson);
     }
 
     // Resolve the promise
@@ -493,6 +533,8 @@ function cssToJson(cssString) {
 
 // apply css to an element from json 
 function applyCssToElement(element, cssProperties) {
+  // reset element style 
+  element.style = "";
   for (const prop in cssProperties) {
     if (cssProperties.hasOwnProperty(prop)) {
       element.style[prop] = cssProperties[prop];
@@ -532,43 +574,70 @@ function updateUiPanelValue(id, properties){
     let cleanId = id.replace('#', '');
 
     // background color
-    let backgroundValEl = properties["background-color"];
-    let backgroundColorFieldEl = document.querySelector("[data-id='" + cleanId + "'] .backgroundColor");
-    backgroundColorFieldEl.value = backgroundValEl;
+    if(properties["background-color"]){
+      let backgroundValEl = properties["background-color"];
+      let backgroundColorFieldEl = document.querySelector("[data-id='" + cleanId + "'] .backgroundColor");
+      if(backgroundColorFieldEl){
+        backgroundColorFieldEl.value = backgroundValEl;
+      }
+    }
 
     // top / left values
-    let topValEl = properties["top"].replace('cm', '');
-    let topFieldEl = document.querySelector("[data-id='" + cleanId + "'] .topPos");
-    topFieldEl.value = parseFloat(topValEl);
+    if(properties["top"]){
+      let topValEl = properties["top"].replace('cm', '');
+      let topFieldEl = document.querySelector("[data-id='" + cleanId + "'] .topPos");
+      topFieldEl.value = parseFloat(topValEl);
+    }
 
-    let leftValEl = properties["left"].replace('cm', '');
-    let leftFieldEl = document.querySelector("[data-id='" + cleanId + "'] .leftPos");
-    leftFieldEl.value = parseFloat(leftValEl);
+    if(properties["left"]){
+      let leftValEl = properties["left"].replace('cm', '');
+      let leftFieldEl = document.querySelector("[data-id='" + cleanId + "'] .leftPos");
+      leftFieldEl.value = parseFloat(leftValEl);
+    }
 
     // z-index
-    let zIndexValEl = properties["z-index"];
-    let zIndexFieldEl = document.querySelector("[data-id='" + cleanId + "'] .zIndex");
-    zIndexFieldEl.value = parseInt(zIndexValEl); 
+    if(properties["z-index"]){
+      let zIndexValEl = properties["z-index"];
+      let zIndexFieldEl = document.querySelector("[data-id='" + cleanId + "'] .zIndex");
+      zIndexFieldEl.value = parseInt(zIndexValEl); 
+    }
 
     // font-family
-    let fontValEl = properties["font-family"];
-    let fontFieldEl = document.querySelector("[data-id='" + cleanId + "'] .fonts");
-    fontFieldEl.value = fontValEl; 
+    if(properties["font-family"]){
+      let fontValEl = properties["font-family"];
+      let fontFieldEl = document.querySelector("[data-id='" + cleanId + "'] .fonts");
+      fontFieldEl.value = fontValEl; 
+    }
 
     // color
-    let colorValEl = properties["color"];
-    let colorFieldEl = document.querySelector("[data-id='" + cleanId + "'] .textColor");
-    colorFieldEl.value = colorValEl;
+    if(properties["color"]){
+      let colorValEl = properties["color"];
+      let colorFieldEl = document.querySelector("[data-id='" + cleanId + "'] .textColor");
+      colorFieldEl.value = colorValEl;
+    }
 
     // font-size
-    let fontSizeValEl = properties["font-size"].replace('pt', '');
-    let fontSizeFieldEl = document.querySelector("[data-id='" + cleanId + "'] .textSize");
-    fontSizeFieldEl.value = parseFloat(fontSizeValEl);
+    if(properties["font-size"]){
+      let fontSizeValEl = properties["font-size"].replace('pt', '');
+      let fontSizeFieldEl = document.querySelector("[data-id='" + cleanId + "'] .textSize");
+      fontSizeFieldEl.value = parseFloat(fontSizeValEl);
+    }
 
     // width
-    let widthValEl = properties["width"].replace('cm', '');
-    let widthFieldEl = document.querySelector("[data-id='" + cleanId + "'] .textWidth");
-    widthFieldEl.value = parseFloat(widthValEl);    
+    if(properties["width"]){
+      let widthValEl = properties["width"].replace('%', '');
+      let widthFieldEl = document.querySelector("[data-id='" + cleanId + "'] .blockWidth");
+      widthFieldEl.value = parseFloat(widthValEl);
+    }
+
+    // monochrome image
+    if(properties["background"]){
+      let monochromeValEl = properties["background"];
+      let monochromeFieldEl = document.querySelector("[data-id='" + cleanId + "'] .monochromeImage");
+      if(monochromeFieldEl){
+        monochromeFieldEl.value = monochromeValEl;
+      }
+    }
 
   }
 }

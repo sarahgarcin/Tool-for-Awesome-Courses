@@ -23,9 +23,9 @@
 			<div class="edit-functions">
 				<div class="text-position gui-group">
 					<label for="topPos">top</label>
-					<input type="number" class="topPos col-2" name="topPos" value="1">
+					<input type="number" class="topPos col-2" name="topPos" value="1">cm
 					<label for="leftPos">left</label>
-					<input type="number" class="leftPos col-2" name="leftPos" value="1">
+					<input type="number" class="leftPos col-2" name="leftPos" value="1">cm
 				</div>
 				<div class="gui-group z-index">
 					<label for="zIndex">z-index</label>
@@ -56,11 +56,11 @@
 				</div>
 				<div class="text-size gui-group">
 					<label for="textSize">font-size</label>
-					<input type="number" class="textSize" name="textSize" value="40">
+					<input type="number" class="textSize" name="textSize" value="40">pt
 				</div>
 				<div class="text-width gui-group">
-					<label for="textWidth">width</label>
-					<input type="text" class="textWidth" name="textWidth" value="auto">
+					<label for="blockWidth">width</label>
+					<input type="number" class="blockWidth" name="blockWidth" value="90">%
 				</div>
 			</div>
 		</div>
@@ -74,17 +74,17 @@
 			<div class="edit-functions">
 				<div class="text-position gui-group">
 					<label for="topPos">top</label>
-					<input type="number" class="topPos col-2" name="topPos" value="1">
+					<input type="number" class="topPos col-2" name="topPos" value="1">cm
 					<label for="leftPos">left</label>
-					<input type="number" class="leftPos col-2" name="leftPos" value="1">
+					<input type="number" class="leftPos col-2" name="leftPos" value="1">cm
 				</div>
 				<div class="gui-group z-index">
 					<label for="zIndex">z-index</label>
 					<input type="number" class="zIndex" name="zIndex" value="1">
 				</div>
 				<div class="text-width gui-group">
-					<label for="textWidth">width</label>
-					<input type="text" class="textWidth" name="textWidth" value="auto">
+					<label for="blockWidth">width</label>
+					<input type="number" class="blockWidth" name="blockWidth" value="90">%
 				</div>
 				<div class="monochrome gui-group">
 					<label for="monochromeImage">monochrome:</label>
@@ -133,7 +133,7 @@
 					</div>
 					<div>
 						<label for="pattern-text-size">font-size:</label>
-					<input type="number" class="pattern-text-size" name="pattern-text-size" value="40">
+					<input type="number" class="pattern-text-size" name="pattern-text-size" value="40">pt
 					</div>
 				</div>
 				<div class="background-pattern-page gui-group">
@@ -162,15 +162,15 @@
 					</div>
 					<div>
 						<label for="pattern-min-width">min width:</label>
-						<input type="number" id="pattern-min-width" name="pattern-min-width" value="0.5">
+						<input type="number" id="pattern-min-width" name="pattern-min-width" value="0.5">cm
 						<label for="pattern-max-width">max width:</label>
-						<input type="number" id="pattern-max-width" name="pattern-max-width" value="3">
+						<input type="number" id="pattern-max-width" name="pattern-max-width" value="3">cm
 					</div>
 					<div>
 						<label for="pattern-min-height">min height:</label>
-						<input type="number" id="pattern-min-height" name="pattern-min-height" value="1">
+						<input type="number" id="pattern-min-height" name="pattern-min-height" value="1">cm
 						<label for="pattern-max-height">max height:</label>
-						<input type="number" id="pattern-max-height" name="pattern-max-height" value="10">
+						<input type="number" id="pattern-max-height" name="pattern-max-height" value="10">cm
 					</div>
 				</div>
 				<button type="text" id="generate-pattern-btn">Générer</button>

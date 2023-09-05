@@ -95,7 +95,7 @@ label{
   text-transform: uppercase; 
   font-weight:normal;
   margin-right: 0px;
-  font-size: 0.85em;
+  font-size: 12.5px;
 }
 
 input[type="text"]{
@@ -104,7 +104,7 @@ input[type="text"]{
 }
 
 input[type="number"]{
-  width: 50px;
+  width: 45px;
   margin-left: -5px;
 }
 
@@ -179,6 +179,7 @@ textarea{
 
 .scrollBox .gui-group{
   margin-left: 20px;
+  font-size: 12.5px;
 }
 
 .scrollBox .gui-group > div{
@@ -321,11 +322,13 @@ textarea{
 .text-block{
   outline: 1px solid blue;
   font-size: 40pt;
+  width: 90%;
 }
 
 .image-block {
   outline: 1px solid red;
   padding: 0;
+  width: 90%;
 }
 
 .image-block .info{
