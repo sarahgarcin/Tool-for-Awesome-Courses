@@ -23,6 +23,29 @@
 }
 
 @font-face {
+    font-family: 'chaumont';
+    src: url('ChaumontScript-Regular.woff2') format('woff2'),
+        url('ChaumontScript-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'dindong';
+    src: url('DINdong.woff2') format('woff2'),
+        url('DINdong.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'hershey';
+    src: url('Hershey-Noailles-Futura-Duplex-Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
     font-family: 'millimetre';
     src: url('Millimetre-Regular_web.woff2') format('woff2'),
         url('Millimetre-Regular_web.woff') format('woff');
@@ -31,8 +54,23 @@
 }
 
 @font-face {
+    font-family: 'ortica';
+    src: url('Ortica-Light') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
     font-family: 'savate';
     src: url('savate-regular-webfont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sligoil';
+    src: url('Sligoil-Micro.woff2') format('woff2'),
+        url('Sligoil-Micro.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -52,13 +90,18 @@
 }
 
 @font-face {
+    font-family: 'syne';
+    src: url('SyneMono-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
     font-family: 'terminal';
     src: url('terminal-grotesque-webfont.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
-
-
 
 @font-face {
     font-family: 'worksans';
